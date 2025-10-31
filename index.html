@@ -134,21 +134,6 @@
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
         }
         
-        .notification {
-            background-color: rgba(255, 87, 34, 0.9);
-            padding: 15px;
-            border-radius: 5px;
-            margin: 20px 0;
-            text-align: center;
-        }
-        
-        .mirror-link {
-            color: #ffcc00;
-            text-decoration: underline;
-            cursor: pointer;
-            font-weight: bold;
-        }
-        
         .instructions {
             margin-top: 20px;
             background-color: rgba(255, 255, 255, 0.1);
@@ -200,10 +185,6 @@
             <p><strong>2025-10-22 问题反馈:</strong> 如遇到任何问题，请通过邮件联系我：wzmwayne@hotmail.com</p>
         </div>
         
-        <div class="notification" id="cnNotification">
-            检测到您位于中国大陆，建议使用 <span class="mirror-link" id="mirrorLink">111盘镜像</span> 以获得更快的下载速度。
-        </div>
-        
         <div class="countdown" id="countdown">
             5秒后将自动下载mc lunch底包，请稍候...
         </div>
@@ -221,8 +202,8 @@
             <button class="btn btn-mirror" id="switchMirrorBtn">切换到111盘镜像</button>
         </div>
         
-        <div class="mirror-info" id="mirrorInfo">
-            当前使用: 主服务器
+        <div class="mirror-info">
+            如果下载速度较慢，可以尝试切换到111盘镜像
         </div>
         
         <div class="instructions">
@@ -231,17 +212,9 @@
     </div>
 
     <script>
-        // 主服务器和镜像服务器地址
-        const MAIN_SERVER_URL = "https://example.com/mc-lunch/";
-        const MIRROR_SERVER_URL = "https://111pan.com/mc-lunch/";
-        
         // 下载链接
-        const BASE_PACKAGE_URL = "mc-lunch-base.zip";
-        const UPDATE_PACKAGE_URL = "mc-lunch-update.zip";
-        
-        // 当前使用的服务器
-        let currentServer = MAIN_SERVER_URL;
-        let isUsingMirror = false;
+        const BASE_PACKAGE_URL = "https://example.com/mc-lunch-base.zip";
+        const UPDATE_PACKAGE_URL = "https://example.com/mc-lunch-update.zip";
         
         // DOM元素
         const countdownEl = document.getElementById('countdown');
@@ -250,8 +223,6 @@
         const cancelBtn = document.getElementById('cancelBtn');
         const updateBtn = document.getElementById('updateBtn');
         const switchMirrorBtn = document.getElementById('switchMirrorBtn');
-        const cnNotification = document.getElementById('cnNotification');
-        const mirrorInfo = document.getElementById('mirrorInfo');
         const downloadStatus = document.getElementById('downloadStatus');
         
         // 下载状态
@@ -259,24 +230,6 @@
         let isDownloading = false;
         let downloadInterval;
         let countdownInterval;
-        
-        // 检测IP是否在中国大陆（模拟实现）
-        function checkIPLocation() {
-            // 实际应用中，这里应该调用一个IP地理位置API
-            // 这里我们使用Math.random()模拟检测结果
-            // 有70%的概率检测为在中国大陆
-            const isInChina = Math.random() < 0.7;
-            
-            if (isInChina) {
-                cnNotification.style.display = 'block';
-                // 检测到中国大陆IP时，自动切换到镜像
-                switchToMirror();
-            } else {
-                cnNotification.style.display = 'none';
-            }
-            
-            return isInChina;
-        }
         
         // 开始倒计时
         function startCountdown() {
@@ -332,7 +285,7 @@
                     isDownloading = false;
                     
                     // 在实际应用中，这里应该触发文件下载
-                    triggerDownload(currentServer + BASE_PACKAGE_URL, "mc-lunch-base.zip");
+                    triggerDownload(BASE_PACKAGE_URL, "mc-lunch-base.zip");
                 }
             }, 200);
         }
@@ -368,29 +321,10 @@
             }
         }
         
-        // 切换到镜像
+        // 切换到镜像网站
         function switchToMirror() {
-            if (isUsingMirror) {
-                // 如果已经在使用镜像，切换回主服务器
-                currentServer = MAIN_SERVER_URL;
-                isUsingMirror = false;
-                mirrorInfo.textContent = "当前使用: 主服务器";
-                switchMirrorBtn.textContent = "切换到111盘镜像";
-                cnNotification.style.display = 'none';
-            } else {
-                // 切换到镜像
-                currentServer = MIRROR_SERVER_URL;
-                isUsingMirror = true;
-                mirrorInfo.textContent = "当前使用: 111盘镜像";
-                switchMirrorBtn.textContent = "切换回主服务器";
-                cnNotification.style.display = 'block';
-                cnNotification.innerHTML = "已切换到111盘镜像，下载速度应该会更快！";
-            }
-            
-            // 如果正在下载，取消当前下载
-            if (isDownloading) {
-                cancelDownload();
-            }
+            // 直接跳转到镜像网站
+            window.open("https://111pan.cn/f/lObH5/mcluncher.html", "_blank");
         }
         
         // 事件监听
@@ -405,14 +339,13 @@
             if (isDownloading) {
                 cancelDownload();
             }
-            triggerDownload(currentServer + UPDATE_PACKAGE_URL, "mc-lunch-update.zip");
+            triggerDownload(UPDATE_PACKAGE_URL, "mc-lunch-update.zip");
             downloadStatus.textContent = "更新包下载已开始，请检查浏览器下载列表！";
         });
         
         switchMirrorBtn.addEventListener('click', switchToMirror);
         
         // 初始化
-        checkIPLocation();
         startCountdown();
     </script>
 </body>
