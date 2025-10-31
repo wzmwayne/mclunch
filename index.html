@@ -58,35 +58,13 @@
             border-radius: 5px;
         }
         
-        .countdown {
+        .download-message {
             text-align: center;
             font-size: 1.2em;
             margin: 20px 0;
             padding: 10px;
             background-color: rgba(255, 255, 255, 0.1);
             border-radius: 5px;
-        }
-        
-        .progress-container {
-            width: 100%;
-            background-color: rgba(255, 255, 255, 0.2);
-            border-radius: 10px;
-            margin: 20px 0;
-            overflow: hidden;
-            height: 30px;
-        }
-        
-        .progress-bar {
-            height: 100%;
-            width: 0%;
-            background: linear-gradient(90deg, #4CAF50, #8BC34A);
-            border-radius: 10px;
-            transition: width 0.3s ease;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-weight: bold;
         }
         
         .buttons {
@@ -119,11 +97,6 @@
             color: white;
         }
         
-        .btn-warning {
-            background-color: #ff9800;
-            color: white;
-        }
-        
         .btn-mirror {
             background-color: #9C27B0;
             color: white;
@@ -142,19 +115,31 @@
             font-size: 0.9em;
         }
         
-        .download-status {
-            text-align: center;
-            margin-top: 15px;
-            font-size: 1.1em;
-            min-height: 25px;
-        }
-        
         .mirror-info {
             background-color: rgba(255, 255, 255, 0.1);
             padding: 10px;
             border-radius: 5px;
             margin-top: 15px;
             text-align: center;
+        }
+        
+        .status-message {
+            text-align: center;
+            margin-top: 15px;
+            font-size: 1.1em;
+            min-height: 25px;
+            padding: 10px;
+            border-radius: 5px;
+        }
+        
+        .status-success {
+            background-color: rgba(76, 175, 80, 0.2);
+            color: #4CAF50;
+        }
+        
+        .status-error {
+            background-color: rgba(244, 67, 54, 0.2);
+            color: #f44336;
         }
         
         @media (max-width: 600px) {
@@ -185,19 +170,14 @@
             <p><strong>2025-10-22 问题反馈:</strong> 如遇到任何问题，请通过邮件联系我：wzmwayne@hotmail.com</p>
         </div>
         
-        <div class="countdown" id="countdown">
-            5秒后将自动下载mc lunch底包，请稍候...
+        <div class="download-message" id="downloadMessage">
+            点击下方按钮开始下载mc lunch底包
         </div>
         
-        <div class="progress-container">
-            <div class="progress-bar" id="progressBar">0%</div>
-        </div>
-        
-        <div class="download-status" id="downloadStatus"></div>
+        <div class="status-message" id="statusMessage"></div>
         
         <div class="buttons">
-            <button class="btn btn-primary" id="redownloadBtn">重新下载底包</button>
-            <button class="btn btn-warning" id="cancelBtn">取消下载</button>
+            <button class="btn btn-primary" id="downloadBtn">下载底包</button>
             <button class="btn btn-secondary" id="updateBtn">下载更新包</button>
             <button class="btn btn-mirror" id="switchMirrorBtn">切换到111盘镜像</button>
         </div>
@@ -213,140 +193,56 @@
 
     <script>
         // 下载链接
-        const BASE_PACKAGE_URL = "https://example.com/mc-lunch-base.zip";
-        const UPDATE_PACKAGE_URL = "https://example.com/mc-lunch-update.zip";
+        const BASE_PACKAGE_URL = "https://111pan.cn/f/XdztW/1.exe";
+        const UPDATE_PACKAGE_URL = "https://111pan.cn/f/3vkca/update.exe";
         
         // DOM元素
-        const countdownEl = document.getElementById('countdown');
-        const progressBar = document.getElementById('progressBar');
-        const redownloadBtn = document.getElementById('redownloadBtn');
-        const cancelBtn = document.getElementById('cancelBtn');
+        const downloadMessage = document.getElementById('downloadMessage');
+        const downloadBtn = document.getElementById('downloadBtn');
         const updateBtn = document.getElementById('updateBtn');
         const switchMirrorBtn = document.getElementById('switchMirrorBtn');
-        const downloadStatus = document.getElementById('downloadStatus');
-        
-        // 下载状态
-        let countdown = 5;
-        let isDownloading = false;
-        let downloadInterval;
-        let countdownInterval;
-        
-        // 开始倒计时
-        function startCountdown() {
-            countdown = 5;
-            countdownEl.textContent = `${countdown}秒后将自动下载mc lunch底包，请稍候...`;
-            downloadStatus.textContent = "";
-            
-            countdownInterval = setInterval(() => {
-                countdown--;
-                countdownEl.textContent = `${countdown}秒后将自动下载mc lunch底包，请稍候...`;
-                
-                if (countdown <= 0) {
-                    clearInterval(countdownInterval);
-                    startDownload();
-                }
-            }, 1000);
-        }
+        const statusMessage = document.getElementById('statusMessage');
         
         // 开始下载
-        function startDownload() {
-            if (isDownloading) return;
+        function startDownload(url, filename, type) {
+            // 显示下载状态
+            statusMessage.textContent = "开始下载，请稍候...";
+            statusMessage.className = "status-message";
             
-            isDownloading = true;
-            countdownEl.textContent = "下载中...";
-            downloadStatus.textContent = "正在连接到服务器...";
+            // 创建下载链接
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = filename;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
             
-            let progress = 0;
-            downloadInterval = setInterval(() => {
-                // 模拟下载过程的不同阶段
-                if (progress < 20) {
-                    progress += Math.random() * 3;
-                    downloadStatus.textContent = "正在连接到服务器...";
-                } else if (progress < 60) {
-                    progress += Math.random() * 5;
-                    downloadStatus.textContent = "正在下载文件...";
-                } else if (progress < 95) {
-                    progress += Math.random() * 2;
-                    downloadStatus.textContent = "正在验证文件完整性...";
-                } else {
-                    progress += 0.5;
-                    downloadStatus.textContent = "准备完成...";
-                }
-                
-                if (progress > 100) progress = 100;
-                
-                progressBar.style.width = `${progress}%`;
-                progressBar.textContent = `${Math.round(progress)}%`;
-                
-                if (progress >= 100) {
-                    clearInterval(downloadInterval);
-                    countdownEl.textContent = "下载完成！";
-                    downloadStatus.textContent = "文件已准备就绪，请检查浏览器下载列表！";
-                    isDownloading = false;
-                    
-                    // 在实际应用中，这里应该触发文件下载
-                    triggerDownload(BASE_PACKAGE_URL, "mc-lunch-base.zip");
-                }
-            }, 200);
-        }
-        
-        // 触发文件下载
-        function triggerDownload(url, filename) {
-            // 在实际应用中，这里应该触发文件下载
-            // 这里我们只是模拟下载行为
-            console.log(`开始下载: ${url}`);
+            // 更新状态
+            statusMessage.textContent = `${type}下载已开始，请检查浏览器下载列表！`;
+            statusMessage.className = "status-message status-success";
             
-            // 创建隐藏的下载链接并点击（实际应用中的做法）
-            // const link = document.createElement('a');
-            // link.href = url;
-            // link.download = filename;
-            // document.body.appendChild(link);
-            // link.click();
-            // document.body.removeChild(link);
-        }
-        
-        // 取消下载
-        function cancelDownload() {
-            if (isDownloading) {
-                clearInterval(downloadInterval);
-                isDownloading = false;
-                progressBar.style.width = "0%";
-                progressBar.textContent = "0%";
-                countdownEl.textContent = "下载已取消";
-                downloadStatus.textContent = "";
-            } else if (countdownInterval) {
-                clearInterval(countdownInterval);
-                countdownEl.textContent = "下载已取消";
-                downloadStatus.textContent = "";
-            }
+            // 3秒后清除状态消息
+            setTimeout(() => {
+                statusMessage.textContent = "";
+                statusMessage.className = "status-message";
+            }, 3000);
         }
         
         // 切换到镜像网站
         function switchToMirror() {
-            // 直接跳转到镜像网站
             window.open("https://111pan.cn/f/lObH5/mcluncher.html", "_blank");
         }
         
         // 事件监听
-        redownloadBtn.addEventListener('click', () => {
-            cancelDownload();
-            startCountdown();
+        downloadBtn.addEventListener('click', () => {
+            startDownload(BASE_PACKAGE_URL, "1.exe", "底包");
         });
         
-        cancelBtn.addEventListener('click', cancelDownload);
-        
         updateBtn.addEventListener('click', () => {
-            if (isDownloading) {
-                cancelDownload();
-            }
-            triggerDownload(UPDATE_PACKAGE_URL, "mc-lunch-update.zip");
-            downloadStatus.textContent = "更新包下载已开始，请检查浏览器下载列表！";
+            startDownload(UPDATE_PACKAGE_URL, "update.exe", "更新包");
         });
         
         switchMirrorBtn.addEventListener('click', switchToMirror);
-        
-        // 初始化
-        startCountdown();
     </script>
 </body>
 </html>
