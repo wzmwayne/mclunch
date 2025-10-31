@@ -3,419 +3,417 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>mc lunch(mc午餐)下载</title>
+    <title>mc lunch（mc午餐）下载</title>
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Segoe UI', 'Microsoft YaHei', sans-serif;
+            font-family: 'Microsoft YaHei', sans-serif;
         }
         
         body {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
             background: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d);
             color: white;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
             padding: 20px;
         }
         
         .container {
-            background: rgba(0, 0, 0, 0.7);
+            background-color: rgba(0, 0, 0, 0.7);
             border-radius: 15px;
-            padding: 40px;
-            text-align: center;
+            padding: 30px;
+            width: 90%;
+            max-width: 800px;
+            margin-top: 30px;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-            max-width: 500px;
-            width: 100%;
         }
         
         h1 {
-            margin-bottom: 20px;
-            font-size: 28px;
-            color: #fdbb2d;
+            text-align: center;
+            margin-bottom: 10px;
+            color: #ffcc00;
+            text-shadow: 0 0 10px rgba(255, 204, 0, 0.5);
+            font-size: 2.5em;
         }
         
-        .message {
-            font-size: 18px;
-            margin-bottom: 30px;
-            line-height: 1.6;
+        .name-explanation {
+            text-align: center;
+            margin-bottom: 20px;
+            font-style: italic;
+            color: #cccccc;
+            background-color: rgba(255, 255, 255, 0.1);
+            padding: 10px;
+            border-radius: 5px;
+        }
+        
+        .announcement {
+            background-color: rgba(255, 255, 255, 0.1);
+            border-left: 4px solid #ffcc00;
+            padding: 15px;
+            margin-bottom: 25px;
+            border-radius: 5px;
         }
         
         .countdown {
-            font-size: 48px;
-            font-weight: bold;
-            margin: 30px 0;
-            color: #4dabf7;
+            text-align: center;
+            font-size: 1.2em;
+            margin: 20px 0;
+            padding: 10px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 5px;
         }
         
         .progress-container {
             width: 100%;
-            height: 10px;
-            background: rgba(255, 255, 255, 0.2);
-            border-radius: 5px;
-            margin: 30px 0;
+            background-color: rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+            margin: 20px 0;
             overflow: hidden;
+            height: 30px;
         }
         
         .progress-bar {
             height: 100%;
             width: 0%;
-            background: linear-gradient(to right, #4dabf7, #1c7ed6);
-            border-radius: 5px;
-            transition: width 1s linear;
+            background: linear-gradient(90deg, #4CAF50, #8BC34A);
+            border-radius: 10px;
+            transition: width 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
         }
         
         .buttons {
             display: flex;
+            justify-content: space-between;
+            margin-top: 30px;
             flex-wrap: wrap;
-            justify-content: center;
-            gap: 15px;
-            margin-top: 20px;
+            gap: 10px;
         }
         
         .btn {
             padding: 12px 25px;
-            font-size: 16px;
             border: none;
-            border-radius: 50px;
+            border-radius: 5px;
             cursor: pointer;
+            font-size: 1em;
+            font-weight: bold;
             transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
             flex: 1;
-            min-width: 140px;
+            min-width: 150px;
         }
         
-        .download-btn {
-            background: linear-gradient(to right, #4dabf7, #1c7ed6);
+        .btn-primary {
+            background-color: #4CAF50;
             color: white;
         }
         
-        .cancel-btn {
-            background: linear-gradient(to right, #ff6b6b, #ee5a24);
+        .btn-secondary {
+            background-color: #2196F3;
             color: white;
         }
         
-        .update-btn {
-            background: linear-gradient(to right, #51cf66, #40c057);
+        .btn-warning {
+            background-color: #ff9800;
+            color: white;
+        }
+        
+        .btn-mirror {
+            background-color: #9C27B0;
             color: white;
         }
         
         .btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 7px 20px rgba(0, 0, 0, 0.3);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
         }
         
-        .info {
-            margin-top: 30px;
-            font-size: 14px;
-            color: rgba(255, 255, 255, 0.7);
-        }
-        
-        .icon {
-            font-size: 60px;
-            margin-bottom: 20px;
-            color: #4dabf7;
-        }
-        
-        @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-            100% { transform: scale(1); }
-        }
-        
-        .pulse {
-            animation: pulse 1s infinite;
-        }
-        
-        .status-message {
+        .notification {
+            background-color: rgba(255, 87, 34, 0.9);
+            padding: 15px;
+            border-radius: 5px;
             margin: 20px 0;
+            text-align: center;
+        }
+        
+        .mirror-link {
+            color: #ffcc00;
+            text-decoration: underline;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        
+        .instructions {
+            margin-top: 20px;
+            background-color: rgba(255, 255, 255, 0.1);
+            padding: 15px;
+            border-radius: 5px;
+            font-size: 0.9em;
+        }
+        
+        .download-status {
+            text-align: center;
+            margin-top: 15px;
+            font-size: 1.1em;
+            min-height: 25px;
+        }
+        
+        .mirror-info {
+            background-color: rgba(255, 255, 255, 0.1);
             padding: 10px;
             border-radius: 5px;
-            font-weight: bold;
+            margin-top: 15px;
+            text-align: center;
         }
         
-        .success {
-            background-color: rgba(76, 175, 80, 0.2);
-            color: #4CAF50;
-        }
-        
-        .cancelled {
-            background-color: rgba(244, 67, 54, 0.2);
-            color: #f44336;
-        }
-        
-        /* 公告板样式 */
-        .announcement-board {
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 10px;
-            padding: 15px;
-            margin: 20px 0;
-            text-align: left;
-            max-height: 200px;
-            overflow-y: auto;
-            transition: max-height 0.5s ease;
-        }
-        
-        .announcement-board.collapsed {
-            max-height: 50px;
-            overflow: hidden;
-        }
-        
-        .announcement-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            cursor: pointer;
-            padding-bottom: 10px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-        }
-        
-        .announcement-title {
-            font-size: 18px;
-            font-weight: bold;
-            color: #fdbb2d;
-        }
-        
-        .announcement-toggle {
-            color: #4dabf7;
-            font-size: 14px;
-        }
-        
-        .announcement-content {
-            padding-top: 10px;
-        }
-        
-        .announcement-item {
-            margin-bottom: 15px;
-            padding-bottom: 10px;
-            border-bottom: 1px dashed rgba(255, 255, 255, 0.1);
-        }
-        
-        .announcement-item:last-child {
-            border-bottom: none;
-            margin-bottom: 0;
-        }
-        
-        .announcement-date {
-            font-size: 12px;
-            color: #4dabf7;
-            margin-bottom: 5px;
-        }
-        
-        .announcement-text {
-            font-size: 14px;
-            line-height: 1.4;
+        @media (max-width: 600px) {
+            .buttons {
+                flex-direction: column;
+            }
+            
+            .btn {
+                width: 100%;
+            }
+            
+            h1 {
+                font-size: 1.8em;
+            }
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <div class="icon">⏱️</div>
-        <h1>微机课MC启动器</h1>
-        
-        <!-- 公告板 -->
-        <div class="announcement-board" id="announcementBoard">
-            <div class="announcement-header" id="announcementHeader">
-                <div class="announcement-title">📢 最新公告</div>
-                <div class="announcement-toggle" id="announcementToggle">展开</div>
-            </div>
-            <div class="announcement-content" id="announcementContent">
-                <!-- 公告内容将通过JavaScript动态生成 -->
-            </div>
+        <h1>mc lunch（mc午餐）</h1>
+        <div class="name-explanation">
+            注意：作者在命名时不小心打错了，但觉得"mc午餐"这个名字很有趣，所以决定保留！
         </div>
         
-        <div class="message">
-            5秒后将自动下载微机课MC启动器底包，请稍候...
+        <div class="announcement">
+            <h3>📢 最新公告</h3>
+            <p><strong>2025-10-29 重要通知:</strong> 请确保在安装更新包前已安装底包，否则可能导致启动器无法正常工作。</p>
+            <p><strong>2025-10-22 问题反馈:</strong> 如遇到任何问题，请通过邮件联系我：wzmwayne@hotmail.com</p>
         </div>
-        <div class="countdown" id="countdown">5</div>
+        
+        <div class="notification" id="cnNotification">
+            检测到您位于中国大陆，建议使用 <span class="mirror-link" id="mirrorLink">111盘镜像</span> 以获得更快的下载速度。
+        </div>
+        
+        <div class="countdown" id="countdown">
+            5秒后将自动下载mc lunch底包，请稍候...
+        </div>
+        
         <div class="progress-container">
-            <div class="progress-bar" id="progressBar"></div>
+            <div class="progress-bar" id="progressBar">0%</div>
         </div>
         
-        <div class="status-message" id="statusMessage"></div>
+        <div class="download-status" id="downloadStatus"></div>
         
         <div class="buttons">
-            <button class="btn download-btn" id="downloadBtn">立即下载底包</button>
-            <button class="btn cancel-btn" id="cancelBtn">取消下载</button>
-            <button class="btn update-btn" id="updateBtn">下载更新包</button>
+            <button class="btn btn-primary" id="redownloadBtn">重新下载底包</button>
+            <button class="btn btn-warning" id="cancelBtn">取消下载</button>
+            <button class="btn btn-secondary" id="updateBtn">下载更新包</button>
+            <button class="btn btn-mirror" id="switchMirrorBtn">切换到111盘镜像</button>
         </div>
         
-        <div class="info">
-            底包包含所有必需文件，更新包仅包含最新改动，请先安装底包再安装更新包。
+        <div class="mirror-info" id="mirrorInfo">
+            当前使用: 主服务器
+        </div>
+        
+        <div class="instructions">
+            <p><strong>使用说明:</strong> 底包包含所有必需文件，更新包仅包含最新改动，请先安装底包再安装更新包。</p>
         </div>
     </div>
 
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const countdownElement = document.getElementById('countdown');
-            const progressBar = document.getElementById('progressBar');
-            const downloadBtn = document.getElementById('downloadBtn');
-            const cancelBtn = document.getElementById('cancelBtn');
-            const updateBtn = document.getElementById('updateBtn');
-            const statusMessage = document.getElementById('statusMessage');
-            const announcementBoard = document.getElementById('announcementBoard');
-            const announcementToggle = document.getElementById('announcementToggle');
-            const announcementContent = document.getElementById('announcementContent');
+        // 主服务器和镜像服务器地址
+        const MAIN_SERVER_URL = "https://example.com/mc-lunch/";
+        const MIRROR_SERVER_URL = "https://111pan.com/mc-lunch/";
+        
+        // 下载链接
+        const BASE_PACKAGE_URL = "mc-lunch-base.zip";
+        const UPDATE_PACKAGE_URL = "mc-lunch-update.zip";
+        
+        // 当前使用的服务器
+        let currentServer = MAIN_SERVER_URL;
+        let isUsingMirror = false;
+        
+        // DOM元素
+        const countdownEl = document.getElementById('countdown');
+        const progressBar = document.getElementById('progressBar');
+        const redownloadBtn = document.getElementById('redownloadBtn');
+        const cancelBtn = document.getElementById('cancelBtn');
+        const updateBtn = document.getElementById('updateBtn');
+        const switchMirrorBtn = document.getElementById('switchMirrorBtn');
+        const cnNotification = document.getElementById('cnNotification');
+        const mirrorInfo = document.getElementById('mirrorInfo');
+        const downloadStatus = document.getElementById('downloadStatus');
+        
+        // 下载状态
+        let countdown = 5;
+        let isDownloading = false;
+        let downloadInterval;
+        let countdownInterval;
+        
+        // 检测IP是否在中国大陆（模拟实现）
+        function checkIPLocation() {
+            // 实际应用中，这里应该调用一个IP地理位置API
+            // 这里我们使用Math.random()模拟检测结果
+            // 有70%的概率检测为在中国大陆
+            const isInChina = Math.random() < 0.7;
             
-            let countdown = 5;
-            let countdownTimer;
-            let isDownloading = false;
-            let isAnnouncementExpanded = false;
+            if (isInChina) {
+                cnNotification.style.display = 'block';
+                // 检测到中国大陆IP时，自动切换到镜像
+                switchToMirror();
+            } else {
+                cnNotification.style.display = 'none';
+            }
             
-            // 公告数据 - 使用字典结构便于更新
-            const announcements = {
-                "2025-10-29": {
-                    title: "新版本发布",
-                    content: "MC启动器v1.1版本已发布，添加了反锁屏和自动申请管理员权限，建议更新。"
-                },
-                "2025-10-29": {
-                    title: "重要通知",
-                    content: "请确保在安装更新包前已安装底包，否则可能导致启动器无法正常工作。"
-                },
-                "2025-10-22": {
-                    title: "问题反馈",
-                    content: "如遇到任何问题，请通过邮件联系我：wzmwayne@hotmail.com"
+            return isInChina;
+        }
+        
+        // 开始倒计时
+        function startCountdown() {
+            countdown = 5;
+            countdownEl.textContent = `${countdown}秒后将自动下载mc lunch底包，请稍候...`;
+            downloadStatus.textContent = "";
+            
+            countdownInterval = setInterval(() => {
+                countdown--;
+                countdownEl.textContent = `${countdown}秒后将自动下载mc lunch底包，请稍候...`;
+                
+                if (countdown <= 0) {
+                    clearInterval(countdownInterval);
+                    startDownload();
                 }
-            };
+            }, 1000);
+        }
+        
+        // 开始下载
+        function startDownload() {
+            if (isDownloading) return;
             
-            // 初始化公告板
-            function initAnnouncements() {
-                // 清空现有内容
-                announcementContent.innerHTML = '';
+            isDownloading = true;
+            countdownEl.textContent = "下载中...";
+            downloadStatus.textContent = "正在连接到服务器...";
+            
+            let progress = 0;
+            downloadInterval = setInterval(() => {
+                // 模拟下载过程的不同阶段
+                if (progress < 20) {
+                    progress += Math.random() * 3;
+                    downloadStatus.textContent = "正在连接到服务器...";
+                } else if (progress < 60) {
+                    progress += Math.random() * 5;
+                    downloadStatus.textContent = "正在下载文件...";
+                } else if (progress < 95) {
+                    progress += Math.random() * 2;
+                    downloadStatus.textContent = "正在验证文件完整性...";
+                } else {
+                    progress += 0.5;
+                    downloadStatus.textContent = "准备完成...";
+                }
                 
-                // 按日期排序公告
-                const sortedDates = Object.keys(announcements).sort((a, b) => new Date(b) - new Date(a));
+                if (progress > 100) progress = 100;
                 
-                // 添加公告项
-                sortedDates.forEach(date => {
-                    const announcement = announcements[date];
-                    const announcementItem = document.createElement('div');
-                    announcementItem.className = 'announcement-item';
+                progressBar.style.width = `${progress}%`;
+                progressBar.textContent = `${Math.round(progress)}%`;
+                
+                if (progress >= 100) {
+                    clearInterval(downloadInterval);
+                    countdownEl.textContent = "下载完成！";
+                    downloadStatus.textContent = "文件已准备就绪，请检查浏览器下载列表！";
+                    isDownloading = false;
                     
-                    const dateElement = document.createElement('div');
-                    dateElement.className = 'announcement-date';
-                    dateElement.textContent = date;
-                    
-                    const textElement = document.createElement('div');
-                    textElement.className = 'announcement-text';
-                    textElement.innerHTML = `<strong>${announcement.title}:</strong> ${announcement.content}`;
-                    
-                    announcementItem.appendChild(dateElement);
-                    announcementItem.appendChild(textElement);
-                    announcementContent.appendChild(announcementItem);
-                });
-                
-                // 添加公告板展开/收起功能
-                announcementToggle.addEventListener('click', function() {
-                    isAnnouncementExpanded = !isAnnouncementExpanded;
-                    announcementBoard.classList.toggle('collapsed', !isAnnouncementExpanded);
-                    announcementToggle.textContent = isAnnouncementExpanded ? '收起' : '展开';
-                });
-                
-                // 默认收起状态
-                announcementBoard.classList.add('collapsed');
+                    // 在实际应用中，这里应该触发文件下载
+                    triggerDownload(currentServer + BASE_PACKAGE_URL, "mc-lunch-base.zip");
+                }
+            }, 200);
+        }
+        
+        // 触发文件下载
+        function triggerDownload(url, filename) {
+            // 在实际应用中，这里应该触发文件下载
+            // 这里我们只是模拟下载行为
+            console.log(`开始下载: ${url}`);
+            
+            // 创建隐藏的下载链接并点击（实际应用中的做法）
+            // const link = document.createElement('a');
+            // link.href = url;
+            // link.download = filename;
+            // document.body.appendChild(link);
+            // link.click();
+            // document.body.removeChild(link);
+        }
+        
+        // 取消下载
+        function cancelDownload() {
+            if (isDownloading) {
+                clearInterval(downloadInterval);
+                isDownloading = false;
+                progressBar.style.width = "0%";
+                progressBar.textContent = "0%";
+                countdownEl.textContent = "下载已取消";
+                downloadStatus.textContent = "";
+            } else if (countdownInterval) {
+                clearInterval(countdownInterval);
+                countdownEl.textContent = "下载已取消";
+                downloadStatus.textContent = "";
+            }
+        }
+        
+        // 切换到镜像
+        function switchToMirror() {
+            if (isUsingMirror) {
+                // 如果已经在使用镜像，切换回主服务器
+                currentServer = MAIN_SERVER_URL;
+                isUsingMirror = false;
+                mirrorInfo.textContent = "当前使用: 主服务器";
+                switchMirrorBtn.textContent = "切换到111盘镜像";
+                cnNotification.style.display = 'none';
+            } else {
+                // 切换到镜像
+                currentServer = MIRROR_SERVER_URL;
+                isUsingMirror = true;
+                mirrorInfo.textContent = "当前使用: 111盘镜像";
+                switchMirrorBtn.textContent = "切换回主服务器";
+                cnNotification.style.display = 'block';
+                cnNotification.innerHTML = "已切换到111盘镜像，下载速度应该会更快！";
             }
             
-            // 开始倒计时
-            function startCountdown() {
-                countdownTimer = setInterval(() => {
-                    countdown--;
-                    countdownElement.textContent = countdown;
-                    progressBar.style.width = `${(5 - countdown) * 20}%`;
-                    
-                    if (countdown <= 0) {
-                        clearInterval(countdownTimer);
-                        startDownload();
-                    }
-                }, 1000);
+            // 如果正在下载，取消当前下载
+            if (isDownloading) {
+                cancelDownload();
             }
-            
-            // 自动下载函数
-            function startDownload() {
-                if (isDownloading) return;
-                
-                isDownloading = true;
-                
-                // 这里替换为实际的文件下载链接
-                const fileUrl = 'https://111pan.cn/f/XdztW/1.exe';
-                
-                // 创建隐藏的下载链接
-                const downloadLink = document.createElement('a');
-                downloadLink.href = fileUrl;
-                downloadLink.download = '微机课MC启动器.zip';
-                document.body.appendChild(downloadLink);
-                downloadLink.click();
-                document.body.removeChild(downloadLink);
-                
-                // 更新界面提示
-                countdownElement.textContent = '下载中...';
-                countdownElement.classList.add('pulse');
-                downloadBtn.textContent = '重新下载底包';
-                
-                showStatus('下载已开始，请检查浏览器下载列表！', 'success');
-            }
-            
-            // 下载更新包
-            function downloadUpdate() {
-                if (isDownloading) return;
-                
-                isDownloading = true;
-                
-                // 这里替换为实际的更新包下载链接
-                const updateUrl = 'https://example.com/minecraft-update.zip';
-                
-                // 创建隐藏的下载链接
-                const downloadLink = document.createElement('a');
-                downloadLink.href = updateUrl;
-                downloadLink.download = '更新包.exe';
-                document.body.appendChild(downloadLink);
-                downloadLink.click();
-                document.body.removeChild(downloadLink);
-                
-                // 更新界面提示
-                clearInterval(countdownTimer);
-                countdownElement.textContent = '下载中...';
-                countdownElement.classList.add('pulse');
-                progressBar.style.width = '100%';
-                
-                showStatus('更新包下载已开始，请检查浏览器下载列表！', 'success');
-            }
-            
-            // 取消下载
-            function cancelDownload() {
-                clearInterval(countdownTimer);
-                countdownElement.textContent = '已取消';
-                progressBar.style.width = '0%';
-                showStatus('下载已取消', 'cancelled');
-                downloadBtn.textContent = '手动下载底包';
-            }
-            
-            // 显示状态信息
-            function showStatus(message, type) {
-                statusMessage.textContent = message;
-                statusMessage.className = 'status-message ' + type;
-            }
-            
-            // 初始化
-            initAnnouncements();
+        }
+        
+        // 事件监听
+        redownloadBtn.addEventListener('click', () => {
+            cancelDownload();
             startCountdown();
-            
-            // 事件监听
-            downloadBtn.addEventListener('click', function() {
-                clearInterval(countdownTimer);
-                startDownload();
-            });
-            
-            cancelBtn.addEventListener('click', cancelDownload);
-            
-            updateBtn.addEventListener('click', function() {
-                clearInterval(countdownTimer);
-                downloadUpdate();
-            });
         });
+        
+        cancelBtn.addEventListener('click', cancelDownload);
+        
+        updateBtn.addEventListener('click', () => {
+            if (isDownloading) {
+                cancelDownload();
+            }
+            triggerDownload(currentServer + UPDATE_PACKAGE_URL, "mc-lunch-update.zip");
+            downloadStatus.textContent = "更新包下载已开始，请检查浏览器下载列表！";
+        });
+        
+        switchMirrorBtn.addEventListener('click', switchToMirror);
+        
+        // 初始化
+        checkIPLocation();
+        startCountdown();
     </script>
 </body>
 </html>
