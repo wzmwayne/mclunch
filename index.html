@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>mc lunch(mc午餐)下载</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', 'Microsoft YaHei', sans-serif;
+        }
+        
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d);
+            color: white;
+            padding: 20px;
+        }
+        
+        .container {
+            background: rgba(0, 0, 0, 0.7);
+            border-radius: 15px;
+            padding: 40px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            max-width: 500px;
+            width: 100%;
+        }
+        
+        h1 {
+            margin-bottom: 20px;
+            font-size: 28px;
+            color: #fdbb2d;
+        }
+        
+        .message {
+            font-size: 18px;
+            margin-bottom: 30px;
+            line-height: 1.6;
+        }
+        
+        .countdown {
+            font-size: 48px;
+            font-weight: bold;
+            margin: 30px 0;
+            color: #4dabf7;
+        }
+        
+        .progress-container {
+            width: 100%;
+            height: 10px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 5px;
+            margin: 30px 0;
+            overflow: hidden;
+        }
+        
+        .progress-bar {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(to right, #4dabf7, #1c7ed6);
+            border-radius: 5px;
+            transition: width 1s linear;
+        }
+        
+        .buttons {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .btn {
+            padding: 12px 25px;
+            font-size: 16px;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            flex: 1;
+            min-width: 140px;
+        }
+        
+        .download-btn {
+            background: linear-gradient(to right, #4dabf7, #1c7ed6);
+            color: white;
+        }
+        
+        .cancel-btn {
+            background: linear-gradient(to right, #ff6b6b, #ee5a24);
+            color: white;
+        }
+        
+        .update-btn {
+            background: linear-gradient(to right, #51cf66, #40c057);
+            color: white;
+        }
+        
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 7px 20px rgba(0, 0, 0, 0.3);
+        }
+        
+        .info {
+            margin-top: 30px;
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.7);
+        }
+        
+        .icon {
+            font-size: 60px;
+            margin-bottom: 20px;
+            color: #4dabf7;
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        
+        .pulse {
+            animation: pulse 1s infinite;
+        }
+        
+        .status-message {
+            margin: 20px 0;
+            padding: 10px;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+        
+        .success {
+            background-color: rgba(76, 175, 80, 0.2);
+            color: #4CAF50;
+        }
+        
+        .cancelled {
+            background-color: rgba(244, 67, 54, 0.2);
+            color: #f44336;
+        }
+        
+        /* 公告板样式 */
+        .announcement-board {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 15px;
+            margin: 20px 0;
+            text-align: left;
+            max-height: 200px;
+            overflow-y: auto;
+            transition: max-height 0.5s ease;
+        }
+        
+        .announcement-board.collapsed {
+            max-height: 50px;
+            overflow: hidden;
+        }
+        
+        .announcement-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            padding-bottom: 10px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .announcement-title {
+            font-size: 18px;
+            font-weight: bold;
+            color: #fdbb2d;
+        }
+        
+        .announcement-toggle {
+            color: #4dabf7;
+            font-size: 14px;
+        }
+        
+        .announcement-content {
+            padding-top: 10px;
+        }
+        
+        .announcement-item {
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px dashed rgba(255, 255, 255, 0.1);
+        }
+        
+        .announcement-item:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+        }
+        
+        .announcement-date {
+            font-size: 12px;
+            color: #4dabf7;
+            margin-bottom: 5px;
+        }
+        
+        .announcement-text {
+            font-size: 14px;
+            line-height: 1.4;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="icon">⏱️</div>
+        <h1>微机课MC启动器</h1>
+        
+        <!-- 公告板 -->
+        <div class="announcement-board" id="announcementBoard">
+            <div class="announcement-header" id="announcementHeader">
+                <div class="announcement-title">📢 最新公告</div>
+                <div class="announcement-toggle" id="announcementToggle">展开</div>
+            </div>
+            <div class="announcement-content" id="announcementContent">
+                <!-- 公告内容将通过JavaScript动态生成 -->
+            </div>
+        </div>
+        
+        <div class="message">
+            5秒后将自动下载微机课MC启动器底包，请稍候...
+        </div>
+        <div class="countdown" id="countdown">5</div>
+        <div class="progress-container">
+            <div class="progress-bar" id="progressBar"></div>
+        </div>
+        
+        <div class="status-message" id="statusMessage"></div>
+        
+        <div class="buttons">
+            <button class="btn download-btn" id="downloadBtn">立即下载底包</button>
+            <button class="btn cancel-btn" id="cancelBtn">取消下载</button>
+            <button class="btn update-btn" id="updateBtn">下载更新包</button>
+        </div>
+        
+        <div class="info">
+            底包包含所有必需文件，更新包仅包含最新改动，请先安装底包再安装更新包。
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const countdownElement = document.getElementById('countdown');
+            const progressBar = document.getElementById('progressBar');
+            const downloadBtn = document.getElementById('downloadBtn');
+            const cancelBtn = document.getElementById('cancelBtn');
+            const updateBtn = document.getElementById('updateBtn');
+            const statusMessage = document.getElementById('statusMessage');
+            const announcementBoard = document.getElementById('announcementBoard');
+            const announcementToggle = document.getElementById('announcementToggle');
+            const announcementContent = document.getElementById('announcementContent');
+            
+            let countdown = 5;
+            let countdownTimer;
+            let isDownloading = false;
+            let isAnnouncementExpanded = false;
+            
+            // 公告数据 - 使用字典结构便于更新
+            const announcements = {
+                "2025-10-29": {
+                    title: "新版本发布",
+                    content: "MC启动器v1.1版本已发布，添加了反锁屏和自动申请管理员权限，建议更新。"
+                },
+                "2025-10-29": {
+                    title: "重要通知",
+                    content: "请确保在安装更新包前已安装底包，否则可能导致启动器无法正常工作。"
+                },
+                "2025-10-22": {
+                    title: "问题反馈",
+                    content: "如遇到任何问题，请通过邮件联系我：wzmwayne@hotmail.com"
+                }
+            };
+            
+            // 初始化公告板
+            function initAnnouncements() {
+                // 清空现有内容
+                announcementContent.innerHTML = '';
+                
+                // 按日期排序公告
+                const sortedDates = Object.keys(announcements).sort((a, b) => new Date(b) - new Date(a));
+                
+                // 添加公告项
+                sortedDates.forEach(date => {
+                    const announcement = announcements[date];
+                    const announcementItem = document.createElement('div');
+                    announcementItem.className = 'announcement-item';
+                    
+                    const dateElement = document.createElement('div');
+                    dateElement.className = 'announcement-date';
+                    dateElement.textContent = date;
+                    
+                    const textElement = document.createElement('div');
+                    textElement.className = 'announcement-text';
+                    textElement.innerHTML = `<strong>${announcement.title}:</strong> ${announcement.content}`;
+                    
+                    announcementItem.appendChild(dateElement);
+                    announcementItem.appendChild(textElement);
+                    announcementContent.appendChild(announcementItem);
+                });
+                
+                // 添加公告板展开/收起功能
+                announcementToggle.addEventListener('click', function() {
+                    isAnnouncementExpanded = !isAnnouncementExpanded;
+                    announcementBoard.classList.toggle('collapsed', !isAnnouncementExpanded);
+                    announcementToggle.textContent = isAnnouncementExpanded ? '收起' : '展开';
+                });
+                
+                // 默认收起状态
+                announcementBoard.classList.add('collapsed');
+            }
+            
+            // 开始倒计时
+            function startCountdown() {
+                countdownTimer = setInterval(() => {
+                    countdown--;
+                    countdownElement.textContent = countdown;
+                    progressBar.style.width = `${(5 - countdown) * 20}%`;
+                    
+                    if (countdown <= 0) {
+                        clearInterval(countdownTimer);
+                        startDownload();
+                    }
+                }, 1000);
+            }
+            
+            // 自动下载函数
+            function startDownload() {
+                if (isDownloading) return;
+                
+                isDownloading = true;
+                
+                // 这里替换为实际的文件下载链接
+                const fileUrl = 'https://111pan.cn/f/XdztW/1.exe';
+                
+                // 创建隐藏的下载链接
+                const downloadLink = document.createElement('a');
+                downloadLink.href = fileUrl;
+                downloadLink.download = '微机课MC启动器.zip';
+                document.body.appendChild(downloadLink);
+                downloadLink.click();
+                document.body.removeChild(downloadLink);
+                
+                // 更新界面提示
+                countdownElement.textContent = '下载中...';
+                countdownElement.classList.add('pulse');
+                downloadBtn.textContent = '重新下载底包';
+                
+                showStatus('下载已开始，请检查浏览器下载列表！', 'success');
+            }
+            
+            // 下载更新包
+            function downloadUpdate() {
+                if (isDownloading) return;
+                
+                isDownloading = true;
+                
+                // 这里替换为实际的更新包下载链接
+                const updateUrl = 'https://example.com/minecraft-update.zip';
+                
+                // 创建隐藏的下载链接
+                const downloadLink = document.createElement('a');
+                downloadLink.href = updateUrl;
+                downloadLink.download = '更新包.exe';
+                document.body.appendChild(downloadLink);
+                downloadLink.click();
+                document.body.removeChild(downloadLink);
+                
+                // 更新界面提示
+                clearInterval(countdownTimer);
+                countdownElement.textContent = '下载中...';
+                countdownElement.classList.add('pulse');
+                progressBar.style.width = '100%';
+                
+                showStatus('更新包下载已开始，请检查浏览器下载列表！', 'success');
+            }
+            
+            // 取消下载
+            function cancelDownload() {
+                clearInterval(countdownTimer);
+                countdownElement.textContent = '已取消';
+                progressBar.style.width = '0%';
+                showStatus('下载已取消', 'cancelled');
+                downloadBtn.textContent = '手动下载底包';
+            }
+            
+            // 显示状态信息
+            function showStatus(message, type) {
+                statusMessage.textContent = message;
+                statusMessage.className = 'status-message ' + type;
+            }
+            
+            // 初始化
+            initAnnouncements();
+            startCountdown();
+            
+            // 事件监听
+            downloadBtn.addEventListener('click', function() {
+                clearInterval(countdownTimer);
+                startDownload();
+            });
+            
+            cancelBtn.addEventListener('click', cancelDownload);
+            
+            updateBtn.addEventListener('click', function() {
+                clearInterval(countdownTimer);
+                downloadUpdate();
+            });
+        });
+    </script>
+</body>
+</html>
