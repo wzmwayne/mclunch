@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>mc lunch（mc午餐）下载</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Microsoft YaHei', sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d);
+            color: white;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .container {
+            background-color: rgba(0, 0, 0, 0.7);
+            border-radius: 15px;
+            padding: 30px;
+            width: 90%;
+            max-width: 800px;
+            margin-top: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        }
+        
+        h1 {
+            text-align: center;
+            margin-bottom: 10px;
+            color: #ffcc00;
+            text-shadow: 0 0 10px rgba(255, 204, 0, 0.5);
+            font-size: 2.5em;
+        }
+        
+        .name-explanation {
+            text-align: center;
+            margin-bottom: 20px;
+            font-style: italic;
+            color: #cccccc;
+            background-color: rgba(255, 255, 255, 0.1);
+            padding: 10px;
+            border-radius: 5px;
+        }
+        
+        .announcement {
+            background-color: rgba(255, 255, 255, 0.1);
+            border-left: 4px solid #ffcc00;
+            padding: 15px;
+            margin-bottom: 25px;
+            border-radius: 5px;
+        }
+        
+        .download-message {
+            text-align: center;
+            font-size: 1.2em;
+            margin: 20px 0;
+            padding: 10px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 5px;
+        }
+        
+        .buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 30px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        
+        .btn {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1em;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            flex: 1;
+            min-width: 150px;
+        }
+        
+        .btn-primary {
+            background-color: #4CAF50;
+            color: white;
+        }
+        
+        .btn-secondary {
+            background-color: #2196F3;
+            color: white;
+        }
+        
+        .btn-mirror {
+            background-color: #9C27B0;
+            color: white;
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+        
+        .instructions {
+            margin-top: 20px;
+            background-color: rgba(255, 255, 255, 0.1);
+            padding: 15px;
+            border-radius: 5px;
+            font-size: 0.9em;
+        }
+        
+        .mirror-info {
+            background-color: rgba(255, 255, 255, 0.1);
+            padding: 10px;
+            border-radius: 5px;
+            margin-top: 15px;
+            text-align: center;
+        }
+        
+        .status-message {
+            text-align: center;
+            margin-top: 15px;
+            font-size: 1.1em;
+            min-height: 25px;
+            padding: 10px;
+            border-radius: 5px;
+        }
+        
+        .status-success {
+            background-color: rgba(76, 175, 80, 0.2);
+            color: #4CAF50;
+        }
+        
+        .status-error {
+            background-color: rgba(244, 67, 54, 0.2);
+            color: #f44336;
+        }
+        
+        @media (max-width: 600px) {
+            .buttons {
+                flex-direction: column;
+            }
+            
+            .btn {
+                width: 100%;
+            }
+            
+            h1 {
+                font-size: 1.8em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>mc lunch（mc午餐）</h1>
+        <div class="name-explanation">
+            注意：作者在命名时不小心打错了，但觉得"mc午餐"这个名字很有趣，所以决定保留！
+        </div>
+        
+        <div class="announcement">
+            <h3>📢 最新公告</h3>
+            <p><strong>2025-10-29 重要通知:</strong> 请确保在安装更新包前已安装底包，否则可能导致启动器无法正常工作。</p>
+            <p><strong>2025-10-22 问题反馈:</strong> 如遇到任何问题，请通过邮件联系我：wzmwayne@hotmail.com</p>
+        </div>
+        
+        <div class="download-message" id="downloadMessage">
+            点击下方按钮开始下载mc lunch底包
+        </div>
+        
+        <div class="status-message" id="statusMessage"></div>
+        
+        <div class="buttons">
+            <button class="btn btn-primary" id="downloadBtn">下载底包</button>
+            <button class="btn btn-secondary" id="updateBtn">下载更新包</button>
+            <button class="btn btn-mirror" id="switchMirrorBtn">切换到111盘镜像</button>
+        </div>
+        
+        <div class="mirror-info">
+            如果下载速度较慢，可以尝试切换到111盘镜像
+        </div>
+        
+        <div class="instructions">
+            <p><strong>使用说明:</strong> 底包包含所有必需文件，更新包仅包含最新改动，请先安装底包再安装更新包。</p>
+        </div>
+    </div>
+
+    <script>
+        // 下载链接
+        const BASE_PACKAGE_URL = "https://github.com/wzmwayne/mclunch/releases/download/1.1/1.exe";
+        const UPDATE_PACKAGE_URL = "https://github.com/wzmwayne/mclunch/releases/download/1.2/update.exe";
+        
+        // DOM元素
+        const downloadMessage = document.getElementById('downloadMessage');
+        const downloadBtn = document.getElementById('downloadBtn');
+        const updateBtn = document.getElementById('updateBtn');
+        const switchMirrorBtn = document.getElementById('switchMirrorBtn');
+        const statusMessage = document.getElementById('statusMessage');
+        
+        // 开始下载
+        function startDownload(url, filename, type) {
+            // 显示下载状态
+            statusMessage.textContent = "开始下载，请稍候...";
+            statusMessage.className = "status-message";
+            
+            // 创建下载链接
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = filename;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            
+            // 更新状态
+            statusMessage.textContent = `${type}下载已开始，请检查浏览器下载列表！`;
+            statusMessage.className = "status-message status-success";
+            
+            // 3秒后清除状态消息
+            setTimeout(() => {
+                statusMessage.textContent = "";
+                statusMessage.className = "status-message";
+            }, 3000);
+        }
+        
+        // 切换到镜像网站
+        function switchToMirror() {
+            window.open("https://111pan.cn/f/lObH5/mcluncher.html", "_blank");
+        }
+        
+        // 事件监听
+        downloadBtn.addEventListener('click', () => {
+            startDownload(BASE_PACKAGE_URL, "1.exe", "底包");
+        });
+        
+        updateBtn.addEventListener('click', () => {
+            startDownload(UPDATE_PACKAGE_URL, "update.exe", "更新包");
+        });
+        
+        switchMirrorBtn.addEventListener('click', switchToMirror);
+    </script>
+</body>
+</html>
